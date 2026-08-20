@@ -255,13 +255,11 @@
   }
   footer a{ color:var(--text-lo); }
 
-  /* Keep Android Open banner container spacing */
-  #kao-slot{ width:100%; }
+  /* Keep Android Open banner: script prepends it to <body> as a fixed-width bar */
+  .kao-banner{ width:100%; }
 </style>
 </head>
 <body>
-
-<div id="kao-slot"></div>
 
 <div class="blob blob-1"></div>
 <div class="blob blob-2"></div>
@@ -270,7 +268,7 @@
 <main class="page">
   <div class="avatar-wrap">
     <div class="avatar-ring"></div>
-    <div class="avatar"><img src="assets/pfp.jpg" alt="Foto profil Cyrro" width="84" height="84"></div>
+    <div class="avatar"><img src="assets/IMG_20250923_105041.jpg" alt="Foto profil Cyrro" width="84" height="84"></div>
   </div>
   <h1>Cyrro</h1>
   <p class="tagline" hidden>Tool favorit yang biasa aku pakai buat download &amp; edit media.</p>
@@ -323,6 +321,6 @@
   </footer>
 </main>
 
-<script src="https://keepandroidopen.org/banner.js?size=mini&amp;lang=id&amp;id=kao-slot"></script>
+<script src="https://keepandroidopen.org/banner.js?size=mini&amp;lang=id"></script>
 </body>
 </html>
