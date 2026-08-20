@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyrro — Tool Favorit</title>
+<meta name="description" content="Kumpulan tool favorit Cyrro untuk download & edit media.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-top:#EAF1FC;
+    --bg-bot:#DCE8FA;
+    --glass-fill: rgba(255,255,255,0.45);
+    --glass-fill-hover: rgba(255,255,255,0.65);
+    --glass-border: rgba(255,255,255,0.75);
+    --text-hi: #10203D;
+    --text-lo: rgba(16,32,61,0.56);
+    --seal:   #2F6FED;
+    --newpipe:#0EA5C7;
+    --audio:  #5B4FE0;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+
+  body{
+    min-height:100svh;
+    background:linear-gradient(180deg,var(--bg-top),var(--bg-bot));
+    color:var(--text-hi);
+    font-family:'Inter',system-ui,sans-serif;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px 18px;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* ambient liquid blobs */
+  .blob{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(70px);
+    opacity:0.28;
+    z-index:0;
+    will-change:transform;
+  }
+  .blob-1{ width:340px; height:340px; background:var(--seal); top:-8%; left:-12%;
+    animation:float1 22s ease-in-out infinite; }
+  .blob-2{ width:300px; height:300px; background:var(--newpipe); bottom:-10%; right:-10%;
+    animation:float2 26s ease-in-out infinite; }
+  .blob-3{ width:260px; height:260px; background:var(--audio); top:38%; right:-14%;
+    animation:float3 30s ease-in-out infinite; }
+
+  @keyframes float1{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(40px,60px) scale(1.15); }
+  }
+  @keyframes float2{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(-50px,-30px) scale(1.1); }
+  }
+  @keyframes float3{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(-30px,50px) scale(0.9); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .blob{ animation:none; }
+  }
+
+  .page{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:420px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  /* header */
+  .avatar-wrap{
+    position:relative;
+    width:96px; height:96px;
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .avatar-ring{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    background:conic-gradient(from 0deg, var(--seal), var(--newpipe), var(--audio), var(--seal));
+    animation:spin 6s linear infinite;
+    -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+            mask:radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  }
+  @keyframes spin{
+    to{ transform:rotate(360deg); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .avatar-ring{ animation:none; }
+  }
+  .avatar{
+    position:relative;
+    width:84px; height:84px;
+    border-radius:50%;
+    overflow:hidden;
+    display:block;
+    box-shadow:
+      0 0 0 3px var(--bg-top),
+      0 10px 30px rgba(47,111,237,0.28);
+  }
+  .avatar img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
+  h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    font-size:1.35rem;
+    letter-spacing:-0.01em;
+    margin:0 0 36px;
+    text-align:center;
+  }
+
+  .tagline{
+    color:var(--text-lo);
+    font-size:0.92rem;
+    text-align:center;
+    margin:0 0 36px;
+    max-width:300px;
+    line-height:1.5;
+  }
+
+  /* eyebrow label */
+  .section-label{
+    align-self:flex-start;
+    font-size:0.72rem;
+    font-weight:600;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--text-lo);
+    margin:0 0 14px 4px;
+  }
+
+  /* glass buttons */
+  .links{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .glass-btn{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    width:100%;
+    padding:16px 18px;
+    border-radius:20px;
+    background:var(--glass-fill);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(18px) saturate(140%);
+    -webkit-backdrop-filter:blur(18px) saturate(140%);
+    text-decoration:none;
+    color:var(--text-hi);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.6) inset,
+      0 10px 30px rgba(16,32,61,0.10);
+    transition:transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+    -webkit-tap-highlight-color:transparent;
+    overflow:hidden;
+  }
+  .glass-btn::before{
+    /* top sheen */
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0) 45%);
+    pointer-events:none;
+  }
+  .glass-btn:hover{
+    transform:translateY(-3px);
+    background:var(--glass-fill-hover);
+  }
+  .glass-btn:active{
+    transform:translateY(0px) scale(0.98);
+  }
+  .glass-btn:focus-visible{
+    outline:2px solid var(--seal);
+    outline-offset:3px;
+  }
+
+  .btn-icon{
+    flex:0 0 auto;
+    width:44px; height:44px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.25rem;
+    position:relative;
+    z-index:1;
+  }
+  .btn-icon svg{ width:22px; height:22px; }
+
+  .btn-text{ position:relative; z-index:1; flex:1; min-width:0; }
+  .btn-name{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    font-size:1rem;
+    margin:0 0 2px;
+  }
+  .btn-desc{
+    font-size:0.8rem;
+    color:var(--text-lo);
+    margin:0;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .btn-arrow{
+    flex:0 0 auto;
+    color:var(--text-lo);
+    position:relative;
+    z-index:1;
+    transition:transform 0.18s ease;
+  }
+  .glass-btn:hover .btn-arrow{ transform:translateX(3px); }
+
+  /* per-tool accent glows */
+  .seal .btn-icon{ background:rgba(47,111,237,0.14); color:var(--seal); box-shadow:0 0 0 1px rgba(47,111,237,0.22) inset;}
+  .seal:hover{ box-shadow:0 1px 0 rgba(255,255,255,0.5) inset, 0 10px 34px rgba(47,111,237,0.20); }
+
+  .newpipe .btn-icon{ background:rgba(14,165,199,0.14); color:var(--newpipe); box-shadow:0 0 0 1px rgba(14,165,199,0.22) inset;}
+  .newpipe:hover{ box-shadow:0 1px 0 rgba(255,255,255,0.5) inset, 0 10px 34px rgba(14,165,199,0.20); }
+
+  .audio .btn-icon{ background:rgba(91,79,224,0.14); color:var(--audio); box-shadow:0 0 0 1px rgba(91,79,224,0.22) inset;}
+  .audio:hover{ box-shadow:0 1px 0 rgba(255,255,255,0.5) inset, 0 10px 34px rgba(91,79,224,0.20); }
+
+  footer{
+    margin-top:40px;
+    font-size:0.76rem;
+    color:var(--text-lo);
+    text-align:center;
+  }
+  footer a{ color:var(--text-lo); }
+
+  /* Keep Android Open banner container spacing */
+  #kao-slot{ width:100%; }
+</style>
+</head>
+<body>
+
+<div id="kao-slot"></div>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<main class="page">
+  <div class="avatar-wrap">
+    <div class="avatar-ring"></div>
+    <div class="avatar"><img src="assets/pfp.jpg" alt="Foto profil Cyrro" width="84" height="84"></div>
+  </div>
+  <h1>Cyrro</h1>
+  <p class="tagline" hidden>Tool favorit yang biasa aku pakai buat download &amp; edit media.</p>
+
+  <span class="section-label">Media Tools</span>
+
+  <nav class="links">
+    <a class="glass-btn seal" href="https://f-droid.org/packages/com.junkfood.seal" target="_blank" rel="noopener">
+      <span class="btn-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </span>
+      <span class="btn-text">
+        <p class="btn-name">Seal</p>
+        <p class="btn-desc">Download media</p>
+      </span>
+      <span class="btn-arrow" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </span>
+    </a>
+
+    <a class="glass-btn newpipe" href="https://newpipe.net" target="_blank" rel="noopener">
+      <span class="btn-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </span>
+      <span class="btn-text">
+        <p class="btn-name">NewPipe</p>
+        <p class="btn-desc">Nonton bebas</p>
+      </span>
+      <span class="btn-arrow" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </span>
+    </a>
+
+    <a class="glass-btn audio" href="https://audioalter.com" target="_blank" rel="noopener">
+      <span class="btn-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </span>
+      <span class="btn-text">
+        <p class="btn-name">AudioAlter</p>
+        <p class="btn-desc">Edit audio</p>
+      </span>
+      <span class="btn-arrow" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </span>
+    </a>
+  </nav>
+
+  <footer>
+    <p>links.cyrro.my.id &middot; dibuat oleh <a href="https://cyrro.my.id" target="_blank" rel="noopener">Cyrro</a></p>
+  </footer>
+</main>
+
+<script src="https://keepandroidopen.org/banner.js?size=mini&amp;lang=id&amp;id=kao-slot"></script>
+</body>
+</html>
